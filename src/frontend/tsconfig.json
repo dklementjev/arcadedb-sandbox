@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "target": "es2020",
+        "lib": [
+            "DOM",
+            "ES2020"
+        ],
+        "moduleResolution": "nodenext",
+        "module": "nodenext",
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+    },
+}

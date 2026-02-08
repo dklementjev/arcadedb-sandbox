@@ -1,0 +1,6 @@
+{
+  "imports": {
+    "@std/encoding": "jsr:@std/encoding@^1.0.10",
+    "@std/ulid": "jsr:@std/ulid@^1.0.0"
+  }
+}

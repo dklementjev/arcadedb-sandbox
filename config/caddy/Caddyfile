@@ -1,0 +1,45 @@
+:80 {
+    log {
+        output stderr
+        format filter {
+            request>headers>Accept delete
+            request>headers>Accept-Encoding delete
+            request>headers>Accept-Language delete
+            request>headers>Sec-Ch-Ua delete
+            request>headers>Sec-Ch-Ua-Mobile delete
+            request>headers>Sec-Fetch-Dest delete
+            request>headers>Sec-Fetch-Mode delete
+            request>headers>Sec-Fetch-Site delete
+            request>headers>Sec-Fetch-User delete
+            request>headers>Upgrade-Insecure-Requests delete
+        }
+    }
+    @static_files path *.svg *.png *.js *.css *.css.map
+    @well_known path /.well-known/*
+
+    log_skip @static_files
+    log_skip @well_known
+
+    redir /db /db/
+    handle_path /db/* {
+        reverse_proxy  http://arcadedb:2480
+    }
+
+    redir /ui /ui/
+    handle_path /ui/* {
+        reverse_proxy http://frontend:9000
+    }
+
+    redir /app /app/
+    handle_path /app/* {
+        reverse_proxy http://backend:9000
+    }
+
+
+    handle {
+        file_server {
+        root /srv/public
+        index index.html
+        }
+    }
+}

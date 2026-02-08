@@ -1,0 +1,60 @@
+services:
+    arcadedb:
+        image: arcadedata/arcadedb:25.11.1
+        networks:
+            db: ~
+            web: ~
+        volumes:
+            - arcadedb-data:/home/arcadedb/databases
+            - arcadedb-backups:/home/arcadedb/backups
+        deploy:
+            resources:
+                limits:
+                    cpus: 1
+                    memory: 2560M
+                reservations:
+                    cpus: 0.5
+                    memory: 512M
+    caddy:
+        image: caddy:2.11
+        command: ["caddy", "run", "--config", "/srv/config/Caddyfile"]
+        volumes:
+            - ./public:/srv/public
+            - ./config/caddy:/srv/config
+        networks:
+            web: ~
+            db: ~
+
+    frontend:
+        image: caddy:2.11
+        command: ["caddy", "file-server", "--root", "/srv/public", "--listen", ":9000"]
+        volumes:
+            - ./src/frontend/public:/srv/public
+        networks:
+            web: ~
+
+    backend:
+        build:
+            context: src/backend
+            dockerfile: ./Dockerfile
+        command: ["deno", "run", "--allow-env", "--allow-net", "app.ts"]
+        working_dir: /srv/app
+        user: deno-app
+        networks:
+            db: ~
+            web: ~
+        volumes:
+            - ./src/backend:/srv/app
+        env_file:
+            - path: ./src/backend/.env
+            - path: ./src/backend/.env.local
+              required: false
+
+networks:
+    db: ~
+    web: ~
+
+volumes:
+    arcadedb-data: ~
+    arcadedb-backups: ~
+    # TODO: -log ?

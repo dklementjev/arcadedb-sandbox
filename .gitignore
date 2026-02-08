@@ -1,3 +1,6 @@
+docker-compose.override.yaml
+*.http
+
 .yarn/*
 !.yarn/patches
 !.yarn/plugins

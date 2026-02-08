@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph DB sandbox</title>
+    <link rel="stylesheet" type="text/css" href="assets/bootstrap/bootstrap.css"/>
+    <link rel="stylesheet" type="text/css" href="assets/css/app.css"/>
+    <script src="assets/bootstrap/bootstrap.js"></script>
+    <script type="module" src="assets/app.bundle.js"></script>
+</head>
+<body>
+    <section class="container-fluid vh-100 d-flex flex-column">
+        <section id="query">
+            <div id="graph-map" class="p-3">
+                <div class="form-row row mb-2">
+                    <div class="input-group">
+                        <input type="text" name="query" value="g.V()" class="form-control"/>
+                        <button type="button" class="btn btn-primary" data-action="run-query">Run</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="result" class="d-flex flex-column flex-grow-1">
+            <ul class="nav nav-tabs flex-grow-0">
+                <li class="nav-item">
+                    <button class="nav-link active" id="json-tab" data-bs-toggle="tab" data-bs-target="#json-tab-pane" data-tag="json">JSON</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#map-tab-pane" data-tag="map">Map</button>
+                </li>
+            </ul>
+            <div class="tab-content flex-grow-1">
+                <div class="tab-pane show active p-3 h-100" id="json-tab-pane">
+                    <textarea placeholder="Query results" class="form-control h-100" name="query-result" id="query-result-json"></textarea>
+                </div>
+                <div class="tab-pane p-3 h-100" id="map-tab-pane">
+                    <div class="row h-100 gx-3">
+                        <div class="col col-10 h-100">
+                            <div id="graph-canvas" class="h-100 border"></div>
+                        </div>
+                        <div class="col col-2 h-100">
+                            <div id="graph-canvas-sidebar" class="h-100 card">
+                                <div id="map-layout-selector-form" class="card-body">
+                                    <label class="form-label" for="graph-map-layout-selector">Map layout</label>
+                                    <select class="form-select" id="graph-map-layout-selector">
+                                        <option value="">Default</option>
+                                        <option value="noverlap">No Overlap</option>
+                                        <option value="circular">Circular</option>
+                                        <option value="circlePack">CirclePack</option>
+                                        <option value="force">Force</option>
+                                        <option value="forceatlas2">ForceAtlas2</option>
+                                        <option value="random">Random</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="status-bar" class="d-flex flex-row justify-content-end align-items-stretch d-none">
+            <div id="db-status">
+                <span class="text">DB status:</span>
+                <span class="icon"></span>
+            </div>
+            <div id="app-status">
+                <span class="text">App status:</span>
+                <span class="icon"></span>
+            </div>
+        </section>
+    </section>
+</body>
+</html>
