@@ -15,10 +15,13 @@ import { BaseViewEvent } from "./views/events";
 import { MapView } from "./views/query-result/map";
 import { QueryResultTabEventName, QueryResultTabsView } from "./views/query-result-tabs";
 import { MapLayoutSelectorView } from "./views/sidebar/map-layout-selector";
+import { VertexPropertiesView } from "./views/sidebar/vertex-properties";
+import { VertexPropertiesModel } from "./models/sidebar/vertex-properties";
 
 const api = new API(''),
     queryFormModel = new FormModel(),
     mapModel = new MapModel(),
+    vertexPropertiesModel = new VertexPropertiesModel(),
     formController = new FormController(api),
     statusBar = new StatusBarView(api, "#status-bar", null),
     mapCard = new MapCardView("#graph-map", queryFormModel),
@@ -26,9 +29,11 @@ const api = new API(''),
     queryResultJSONView = new JSONView("#json-tab-pane", queryFormModel),
     queryResultMapView = new MapView("#map-tab-pane", queryFormModel),
     mapLayoutSelectorView = new MapLayoutSelectorView("#map-layout-selector-form", null),
+    vertexPropertiesView = new VertexPropertiesView("#vertex-properties", vertexPropertiesModel),
     mapController = new MapController(
         queryFormModel,
         mapModel,
+        vertexPropertiesModel,
         () => queryResultMapView.getMapContainer()
     )
 ;
@@ -73,7 +78,8 @@ function setup()
     mapLayoutSelectorView.events.on(
         "change",
         (e) => mapController.updateLayout(e.layout),
-    )
+    );
+    setupView(vertexPropertiesView);
 
     mapController.render();
 }

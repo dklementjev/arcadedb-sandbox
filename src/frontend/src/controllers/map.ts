@@ -4,6 +4,8 @@ import { FormModel } from "../models/form";
 import { MapLayout, MapModel } from "../models/map";
 import { Sigma } from "sigma";
 import Graph from "graphology";
+import { SigmaNodeEventPayload } from "sigma/types";
+import { VertexPropertiesModel } from "../models/sidebar/vertex-properties";
 
 export class MapController {
     protected sigma: Sigma|null = null;
@@ -11,6 +13,7 @@ export class MapController {
     constructor (
         protected readonly formModel: FormModel,
         protected readonly mapModel: MapModel,
+        protected readonly vertexPropertiesModel: VertexPropertiesModel,
         protected readonly mapContainerFactory: () => HTMLElement,
     ) { }
 
@@ -39,6 +42,7 @@ export class MapController {
 
         this.setupNodeReducer(res);
         this.setupNodeDragging(graph, res);
+        this.setupNodeClicking(graph, res);
 
         return res;
     }
@@ -161,12 +165,20 @@ export class MapController {
 
         const handleUp = () => {
             if (draggedNode) {
-            graph.removeNodeAttribute(draggedNode, "highlighted");
+                graph.removeNodeAttribute(draggedNode, "highlighted");
             }
             isDragging = false;
             draggedNode = null;
         };
         sigma.on("upNode", handleUp);
         sigma.on("upStage", handleUp);
+    }
+
+    protected setupNodeClicking(graph: Graph, sigma: Sigma): void {
+        sigma.on("clickNode", (payload) => this.nodeClickHandler(graph, payload));
+    }
+
+    protected nodeClickHandler (graph: Graph, payload: SigmaNodeEventPayload): void {
+        this.vertexPropertiesModel.setRawAttributes(graph.getNodeAttributes(payload.node))
     }
 }
