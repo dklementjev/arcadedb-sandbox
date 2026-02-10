@@ -49,7 +49,7 @@ export class VertexPropertiesView extends BaseView<BaseViewEvent, VertexProperti
             <tbody>
             <% for(const row of it.rows) { %>
             <tr>
-                <th scope="row"><%= row.title %></th>
+                <th scope="row" class="w-50"><%= row.title %></th>
                 <td><%= row.value %></td>
             </tr>
             <% } %>
