@@ -89,41 +89,13 @@ export class MapController {
 
     protected setupNodeReducer(sigma: Sigma) {
         const getNodeType = (_attr) => "circle";
-        const getNodeSize = (attr) => {
-            const nodeType = attr.data['@type'];
-
-            switch (nodeType) {
-                case "payment":
-                    return 35;
-
-                case "payment-handler":
-                    return 25;
-
-                case "agent":
-                    return 15;
-            }
-
-            return 10
-        };
+        const getNodeSize = (_attr) => 10;
         const getNodeLabel = (id, attr) => {
-            const nodeType = attr.data['@type'];
+            const nodeType = attr.data['@type'],
+                label = [nodeType, attr.data.name ?? null, attr.data.id ?? null, id].filter((v) => !!v).join(' ')
+            ;
 
-            switch (nodeType) {
-                case "agent":
-                    return `Agent #${attr.data.id}`;
-
-                case "subagent":
-                    return `Subagent #${attr.data.id}`;
-
-                case "payment-handler":
-                    return `Payment handler: ${attr.data.kind} ${attr.data.name}`;
-
-                case "payment":
-                    return `Payment direction: ${attr.data.direction}`;
-
-                default:
-                    return `?${nodeType} ${id}`;
-            }
+            return label
         };
 
         sigma.setSetting(
