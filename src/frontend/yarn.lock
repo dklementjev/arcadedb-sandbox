@@ -305,6 +305,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eta@npm:^4.5.1":
+  version: 4.5.1
+  resolution: "eta@npm:4.5.1"
+  checksum: 10c0/607ad56127bef8f192d3d29ae02df38d35ba371bdeac2a52b346feac0289bf67c78c00df0b14da6e6ace542c68ea745e53741fa6c09c32e61698ddde0ec0e413
+  languageName: node
+  linkType: hard
+
 "events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
@@ -325,6 +332,7 @@ __metadata:
   dependencies:
     bootstrap: "npm:^5.0"
     esbuild: "npm:^0.27.2"
+    eta: "npm:^4.5.1"
     graphology: "npm:^0.26.0"
     graphology-layout: "npm:^0.6.1"
     graphology-layout-force: "npm:^0.2.4"

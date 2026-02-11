@@ -1,6 +1,7 @@
 import mitt, { Emitter } from "mitt"
 import { BaseViewEvent } from "./events";
 import { BaseModel } from "../models/base";
+import { getInstance as getTemplateEngineInstance, TemplateEngine } from "./template-engine";
 
 export class BaseView<EventDataType extends BaseViewEvent = BaseViewEvent, ModelType extends BaseModel = BaseModel> {
     public readonly events: Emitter<Record<string, EventDataType>>;
@@ -26,5 +27,9 @@ export class BaseView<EventDataType extends BaseViewEvent = BaseViewEvent, Model
 
     getEl (): HTMLElement|null {
         return document.querySelector(this.selector);
+    }
+
+    get template (): TemplateEngine {
+        return getTemplateEngineInstance();
     }
 }
