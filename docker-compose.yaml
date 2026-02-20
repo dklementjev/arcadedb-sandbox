@@ -37,7 +37,7 @@ services:
         build:
             context: src/backend
             dockerfile: ./Dockerfile
-        command: ["deno", "run", "--allow-env", "--allow-net", "app.ts"]
+        command: ["deno", "run", "--vendor=true", "--cached-only", "-P", "--watch", "app.ts"]
         working_dir: /srv/app
         user: deno-app
         networks:
