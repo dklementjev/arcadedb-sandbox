@@ -2,5 +2,20 @@
   "imports": {
     "@std/encoding": "jsr:@std/encoding@^1.0.10",
     "@std/ulid": "jsr:@std/ulid@^1.0.0"
+  },
+  "permissions": {
+    "default": {
+      "env": true,
+      "net": true,
+      "read": [
+        "/srv/uploads"
+      ],
+      "write": [
+        "/srv/uploads"
+      ],
+      "sys": [
+        "uid"
+      ]
+    }
   }
 }

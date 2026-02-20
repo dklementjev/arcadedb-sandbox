@@ -30,6 +30,9 @@
                 <li class="nav-item">
                     <button class="nav-link" id="map-tab" data-bs-toggle="tab" data-bs-target="#map-tab-pane" data-tag="map">Map</button>
                 </li>
+                <li class="nav-item">
+                    <button class="nav-link" id="import-tab" data-bs-toggle="tab" data-bs-target="#import-tab-pane" data-tag="map">Import</button>
+                </li>
             </ul>
             <div class="tab-content flex-grow-1">
                 <div class="tab-pane show active p-3 h-100" id="json-tab-pane">
@@ -58,6 +61,25 @@
                                     <div id="vertex-properties-table"></div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane p-3 h-100" id="import-tab-pane">
+                    <div id="import-card" class="h-100 card">
+                        <div class="card-body">
+                            <form>
+                                <div class="form-row">
+                                    <label for="import-mapping-input" class="form-label">Mapping</label>
+                                    <input type="file" class="form-control" name="import-mapping" id="import-mapping-input" accept="application/json" required />
+                                </div>
+                                <div class="form-row">
+                                    <label for="import-data-input" class="form-label">Data</label>
+                                    <input type="file" class="form-control" name="import-data" id="import-data-input" accept="application/json" required />
+                                </div>
+                                <div class="form-row">
+                                    <button type="submit" disabled class="btn btn-primary">Run import</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

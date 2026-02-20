@@ -37,14 +37,21 @@ services:
         build:
             context: src/backend
             dockerfile: ./Dockerfile
-        command: ["deno", "run", "--allow-env", "--allow-net", "app.ts"]
+        command: ["deno", "run", "--vendor=true", "--cached-only", "-P", "--watch", "app.ts"]
         working_dir: /srv/app
         user: deno-app
         networks:
             db: ~
             web: ~
         volumes:
-            - ./src/backend:/srv/app
+            - type: bind
+              source: ./src/backend
+              target: /srv/app
+            - type: tmpfs
+              target: /srv/uploads
+              tmpfs:
+                size: 128M
+                mode: 0777
         env_file:
             - path: ./src/backend/.env
             - path: ./src/backend/.env.local
@@ -57,4 +64,5 @@ networks:
 volumes:
     arcadedb-data: ~
     arcadedb-backups: ~
+    deno-dir: ~
     # TODO: -log ?

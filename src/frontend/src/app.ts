@@ -17,6 +17,7 @@ import { QueryResultTabEventName, QueryResultTabsView } from "./views/query-resu
 import { MapLayoutSelectorView } from "./views/sidebar/map-layout-selector";
 import { VertexPropertiesView } from "./views/sidebar/vertex-properties";
 import { VertexPropertiesModel } from "./models/sidebar/vertex-properties";
+import { ImportCardView } from "./views/import-card";
 
 const api = new API(''),
     queryFormModel = new FormModel(),
@@ -25,6 +26,7 @@ const api = new API(''),
     formController = new FormController(api),
     statusBar = new StatusBarView(api, "#status-bar", null),
     mapCard = new MapCardView("#graph-map", queryFormModel),
+    importCard = new ImportCardView("#import-tab-pane", null),
     queryResultTabsView = new QueryResultTabsView("#result > .nav", null),
     queryResultJSONView = new JSONView("#json-tab-pane", queryFormModel),
     queryResultMapView = new MapView("#map-tab-pane", queryFormModel),
@@ -74,6 +76,7 @@ function setup()
     )
     setupView(queryResultJSONView);
     setupView(queryResultMapView);
+    setupView(importCard);
     setupView(mapLayoutSelectorView);
     mapLayoutSelectorView.events.on(
         "change",
