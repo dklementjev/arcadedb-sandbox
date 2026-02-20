@@ -31,6 +31,7 @@ interface SerializedQuery {
     language: QueryLanguage,
     command: string,
     params: QueryParams,
+    serializer?: string,
 }
 
 export type QueryParams = Record<string, string|number|boolean|null>;
@@ -90,7 +91,7 @@ export class ArcadeDB {
         ;
     }
 
-    runQuery (dbName: string, query: Query,serializer: QuerySerializer = QuerySerializer.Studio): Promise<Response> {
+    runQuery (dbName: string, query: Query, serializer: QuerySerializer = QuerySerializer.Studio): Promise<Response> {
         const  path = `/query/${dbName}`,
             data = this.serializeQuery(query, serializer),
             headers = {}
@@ -103,13 +104,65 @@ export class ArcadeDB {
         );
     }
 
-    // runCommand (dbName: string, command: Query): QueryResult; // TODO
+    runCommand (dbName: string, command: Query, serializer: QuerySerializer = QuerySerializer.Studio): Promise<Response> {
+        const path = `/command/${dbName}`,
+            data = this.serializeQuery(command, serializer),
+            headers = {
+                "Content-Type": "application/json",
+            }
+        ;
 
-    // beginTransaction (dbName: string): Transaction; //TODO
+        return this.post(
+            path,
+            JSON.stringify(data),
+            this.addAuthorizationHeaders(headers),
+        );
+    }
 
-    // commitTransaction (dbName: string, transaction: Transaction): void; //TODO
+    beginTransaction (dbName: string): Promise<Transaction|null> {
+        const path = `/begin/${dbName}`,
+            headers = {}
+        ;
 
-    // rollbackTransaction (dbName: string,transaction: Transaction): void; //TODO
+        return this.post(
+            path,
+            null,
+            this.addAuthorizationHeaders(headers)
+        )
+        .then((response) => {
+            const sessionId = response.headers.get('arcadedb-session-id');
+
+            return sessionId ? new Transaction(sessionId) : null;
+        })
+    }
+
+    commitTransaction (dbName: string, transaction: Transaction): Promise<Response> {
+        const path = `/commit/${dbName}`,
+            headers = {
+                'arcadedb-session-id': transaction.id,
+            }
+        ;
+
+        return this.post(
+            path,
+            null,
+            this.addAuthorizationHeaders(headers),
+        );
+    }
+
+    rollbackTransaction (dbName: string,transaction: Transaction): Promise<Response> {
+        const path = `/rollback/${dbName}`,
+            headers = {
+                'arcadedb-session-id': transaction.id,
+            }
+        ;
+
+        return this.post(
+            path,
+            null,
+            this.addAuthorizationHeaders(headers),
+        );
+    }
 
     protected get (path: string, headers?: RequestHeaders): Promise<Response> {
         return this.request('GET', path, null, headers);
