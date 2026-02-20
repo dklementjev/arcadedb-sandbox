@@ -44,7 +44,9 @@ services:
             db: ~
             web: ~
         volumes:
-            - ./src/backend:/srv/app
+            - type: bind
+              source: ./src/backend
+              target: /srv/app
         env_file:
             - path: ./src/backend/.env
             - path: ./src/backend/.env.local
